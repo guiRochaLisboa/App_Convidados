@@ -7,7 +7,6 @@ import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.app_convidados.R
-import com.example.app_convidados.service.constants.GuestConstants
 import com.example.app_convidados.viewmodel.GuestFormViewModel
 import kotlinx.android.synthetic.main.activity_guest_form.*
 
@@ -28,68 +27,27 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
 
         setListener()
         observe()
-        loadData()
-
-        button_present.isChecked = true
-
-    }
-
-    private fun loadData() {
-       val bundle = intent.extras
-
-        if(bundle != null){
-            val id = bundle.getInt(GuestConstants.GUEST_ID)
-            mViewModel.load(id)
-        }
     }
 
     override fun onClick(v: View) {
         val id = v.id
-
         if(id == R.id.button_save){
-
-            val bundle = intent.extras
             val name = edit_name.text.toString()
             val presence = button_present.isChecked
 
-            if(bundle != null){
-                val id = bundle.getInt(GuestConstants.GUEST_ID)
-                mViewModel.update(id,name,presence)
-            }else{
-                mViewModel.save(name,presence)
-            }
-
-
+            mViewModel.save(name,presence)
         }
     }
 
     private fun observe() {
         mViewModel.saveGuest.observe(this, Observer {
             if(it){
-                Toast.makeText(applicationContext,"Sucesso ao criar",Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext,"Sucesso",Toast.LENGTH_SHORT).show()
             }else{
-                Toast.makeText(applicationContext,"Falha ao tentar criar",Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext,"Falha",Toast.LENGTH_SHORT).show()
             }
             finish()
 
-        })
-
-        mViewModel.updateGuest.observe(this, Observer {
-            if(it){
-                Toast.makeText(applicationContext,"Sucesso ao atualizar",Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(applicationContext,"Sucesso ao atualizar ",Toast.LENGTH_SHORT).show()
-            }
-            finish()
-        })
-
-        mViewModel.guest.observe(this, Observer {
-            edit_name.setText(it.name)
-            if(it.presence){
-                button_present.isChecked = true
-            }else{
-                button_absent.isChecked = true
-            }
         })
     }
 

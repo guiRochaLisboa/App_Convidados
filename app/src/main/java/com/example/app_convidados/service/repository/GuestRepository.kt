@@ -2,7 +2,7 @@ package com.example.app_convidados.service.repository
 
 import android.content.ContentValues
 import android.content.Context
-import com.example.app_convidados.service.constants.DataBaseConstants
+import com.example.app_convidados.service.DataBaseConstants
 import com.example.app_convidados.service.model.GuestModel
 import java.lang.Exception
 
@@ -39,10 +39,8 @@ class GuestRepository private constructor(context: Context) {
             val db = mGuestDataBaseHelper.writableDatabase
 
             val contentValues = ContentValues()
-
             contentValues.put(DataBaseConstants.GUEST.COLUMNS.NAME, guest.name)
-            contentValues.put(DataBaseConstants.GUEST.COLUMNS.PRESENCE, guest.presence)
-
+            contentValues.put(DataBaseConstants.GUEST.COLUMNS.ID, guest.presence)
 
             db.insert(DataBaseConstants.GUEST.TABLE_NAME, null, contentValues)
             true
@@ -144,11 +142,11 @@ class GuestRepository private constructor(context: Context) {
             if (cursor != null && cursor.count > 0) {
                 while (cursor.moveToNext()) {
                     val id =
-                        cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseConstants.GUEST.COLUMNS.ID))
+                        cursor.getInt(cursor.getColumnIndex(DataBaseConstants.GUEST.COLUMNS.ID))
                     val name =
-                        cursor.getString(cursor.getColumnIndexOrThrow(DataBaseConstants.GUEST.COLUMNS.NAME))
+                        cursor.getString(cursor.getColumnIndex(DataBaseConstants.GUEST.COLUMNS.NAME))
                     val presence =
-                        (cursor.getInt(cursor.getColumnIndexOrThrow(DataBaseConstants.GUEST.COLUMNS.PRESENCE)) == 1)
+                        (cursor.getInt(cursor.getColumnIndex(DataBaseConstants.GUEST.COLUMNS.PRESENCE)) == 1)
 
                     val guest = GuestModel(id, name, presence)
                     list.add(guest)

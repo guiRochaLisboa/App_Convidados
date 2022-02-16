@@ -10,12 +10,14 @@ import com.example.app_convidados.service.repository.GuestRepository
 
 class AllGuestViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val mRepository = GuestRepository.getIntance(application.applicationContext)
+    private val mGuestRepository = GuestRepository.getIntance(application.applicationContext)
 
-    private val mListGuest = MutableLiveData<List<GuestModel>>()
-    val list: LiveData<List<GuestModel>> = mListGuest
+    private val mGuestList = MutableLiveData<List<GuestModel>>()
+    val guestList: LiveData<List<GuestModel>> = mGuestList
 
     fun load() {
-        mListGuest.value = mRepository.getAll()
+        mGuestList.value = mGuestRepository.getAll()
     }
+
+
 }

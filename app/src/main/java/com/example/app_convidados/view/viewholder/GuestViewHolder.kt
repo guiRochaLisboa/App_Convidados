@@ -5,18 +5,16 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.app_convidados.R
 import com.example.app_convidados.service.model.GuestModel
-import com.example.app_convidados.view.listener.GuestListener
 
-class GuestViewHolder(itemView: View,private val listener: GuestListener) : RecyclerView.ViewHolder(itemView) {
+class GuestViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+    /**
+     *  Nossa classe GuestViewHolder é a responsável por armazenar os nossos elementos de interfaces
+     */
 
-    fun bind(guest: GuestModel) {
+    fun bind(guestModel: GuestModel) {
         val textName = itemView.findViewById<TextView>(R.id.text_name)
-        textName.text = guest.name
-
-        textName.setOnClickListener {
-            listener.onClick(guest.id)
-        }
+        textName.text = guestModel.name
     }
 
 }

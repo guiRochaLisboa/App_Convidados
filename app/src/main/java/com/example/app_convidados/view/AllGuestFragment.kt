@@ -1,11 +1,9 @@
 package com.example.app_convidados.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -13,9 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.app_convidados.R
 import com.example.app_convidados.databinding.FragmentAllBinding
-import com.example.app_convidados.service.constants.GuestConstants
 import com.example.app_convidados.view.adapter.GuestAdapter
-import com.example.app_convidados.view.listener.GuestListener
 import com.example.app_convidados.viewmodel.AllGuestViewModel
 
 class AllGuestFragment : Fragment() {
@@ -23,7 +19,6 @@ class AllGuestFragment : Fragment() {
     private var _binding: FragmentAllBinding? = null
     private lateinit var allGuestViewModel: AllGuestViewModel
     private val mAdapter: GuestAdapter = GuestAdapter()
-    private lateinit var mListener: GuestListener
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -32,10 +27,9 @@ class AllGuestFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        savedInstanceState: Bundle?
     ): View {
-        allGuestViewModel =
-            ViewModelProvider(this).get(AllGuestViewModel::class.java)
+        allGuestViewModel =   ViewModelProvider(this)[AllGuestViewModel::class.java]
 
         _binding = FragmentAllBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -59,47 +53,21 @@ class AllGuestFragment : Fragment() {
          */
         recycler.adapter = mAdapter
 
-
-        mListener = object  : GuestListener{
-            override fun onClick(id: Int) {
-
-                val intent = Intent(context,GuestFormActivity::class.java)
-
-                val bundle = Bundle()
-                bundle.putInt(GuestConstants.GUEST_ID,id)
-
-                intent.putExtras(bundle)
-                startActivity(intent)
-            }
-
-        }
-
-        mAdapter.attachListener(mListener)
-
         observe()
         allGuestViewModel.load()
+
 
         return root
     }
 
-    /**
-     *Carrega os usuários quando a fragment volta a ter a atenção do usuário
-     */
-
-    override fun onResume() {
-        super.onResume()
-
-        allGuestViewModel.load()
+    private fun observe() {
+        allGuestViewModel.guestList.observe(viewLifecycleOwner, Observer {
+            mAdapter.updateGuest(it)
+        })
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private fun observe() {
-        allGuestViewModel.list.observe(viewLifecycleOwner, Observer {
-            mAdapter.updateGuest(it)
-        })
     }
 }
