@@ -41,7 +41,7 @@ class GuestRepository private constructor(context: Context) {
             val contentValues = ContentValues()
 
             contentValues.put(DataBaseConstants.GUEST.COLUMNS.NAME, guest.name)
-            contentValues.put(DataBaseConstants.GUEST.COLUMNS.NAME, guest.presence)
+            contentValues.put(DataBaseConstants.GUEST.COLUMNS.PRESENCE, guest.presence)
 
 
             db.insert(DataBaseConstants.GUEST.TABLE_NAME, null, contentValues)

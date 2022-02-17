@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -17,6 +18,8 @@ import com.example.app_convidados.viewmodel.AllGuestViewModel
 class AllGuestFragment : Fragment() {
 
     private var _binding: FragmentAllBinding? = null
+    private lateinit var allGuestViewModel: AllGuestViewModel
+    private val mAdapter : GuestAdapter = GuestAdapter()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -27,7 +30,7 @@ class AllGuestFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
+        allGuestViewModel =
             ViewModelProvider(this).get(AllGuestViewModel::class.java)
 
         _binding = FragmentAllBinding.inflate(inflater, container, false)
@@ -50,16 +53,29 @@ class AllGuestFragment : Fragment() {
          * onde ele pega os dados do repositório e junta com o nosso layout
          * podendo assim renderizar as nossas informações em tela
          */
-        recycler.adapter = GuestAdapter()
+        recycler.adapter = mAdapter
 
 
-
+        observe()
+        allGuestViewModel.load()
 
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        allGuestViewModel.load()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun observe() {
+        allGuestViewModel.list.observe(viewLifecycleOwner, Observer {
+            mAdapter.updateGuest(it)
+        })
     }
 }
