@@ -2,7 +2,7 @@ package com.example.app_convidados.service.repository
 
 import android.content.ContentValues
 import android.content.Context
-import com.example.app_convidados.service.DataBaseConstants
+import com.example.app_convidados.service.constants.DataBaseConstants
 import com.example.app_convidados.service.model.GuestModel
 import java.lang.Exception
 
