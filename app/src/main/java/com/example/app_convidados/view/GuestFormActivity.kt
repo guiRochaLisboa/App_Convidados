@@ -18,6 +18,7 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
      */
 
     private lateinit var mViewModel: GuestFormViewModel
+    private var mGuestId : Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,66 +36,48 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun loadData() {
-       val bundle = intent.extras
-
-        if(bundle != null){
-            val id = bundle.getInt(GuestConstants.GUEST_ID)
-            mViewModel.load(id)
+        val bundle = intent.extras
+        if (bundle != null) {
+            mGuestId = bundle.getInt(GuestConstants.GUEST_ID)
+            mViewModel.load(mGuestId)
         }
     }
 
     override fun onClick(v: View) {
         val id = v.id
-
-        if(id == R.id.button_save){
-
-            val bundle = intent.extras
+        if (id == R.id.button_save) {
             val name = edit_name.text.toString()
             val presence = button_present.isChecked
 
-            if(bundle != null){
-                val id = bundle.getInt(GuestConstants.GUEST_ID)
-                mViewModel.update(id,name,presence)
-            }else{
-                mViewModel.save(name,presence)
-            }
-
+                mViewModel.save(mGuestId,name, presence)
 
         }
     }
 
     private fun observe() {
         mViewModel.saveGuest.observe(this, Observer {
-            if(it){
-                Toast.makeText(applicationContext,"Sucesso ao criar",Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(applicationContext,"Falha ao tentar criar",Toast.LENGTH_SHORT).show()
+            if (it) {
+                Toast.makeText(applicationContext, "Sucesso", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(applicationContext, "Falha", Toast.LENGTH_SHORT)
+                    .show()
             }
             finish()
 
-        })
-
-        mViewModel.updateGuest.observe(this, Observer {
-            if(it){
-                Toast.makeText(applicationContext,"Sucesso ao atualizar",Toast.LENGTH_SHORT).show()
-            }else{
-                Toast.makeText(applicationContext,"Sucesso ao atualizar ",Toast.LENGTH_SHORT).show()
-            }
-            finish()
         })
 
         mViewModel.guest.observe(this, Observer {
             edit_name.setText(it.name)
-            if(it.presence){
+            if (it.presence) {
                 button_present.isChecked = true
-            }else{
+            } else {
                 button_absent.isChecked = true
             }
         })
     }
 
     private fun setListener() {
-       button_save.setOnClickListener(this)
+        button_save.setOnClickListener(this)
     }
 
 }

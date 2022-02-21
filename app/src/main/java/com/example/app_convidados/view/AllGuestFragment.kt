@@ -72,12 +72,17 @@ class AllGuestFragment : Fragment() {
                 startActivity(intent)
             }
 
+            override fun onDelete(id: Int) {
+                allGuestViewModel.delete(id)
+                allGuestViewModel.load(GuestConstants.FILTER.EMPTY)
+            }
+
         }
 
         mAdapter.attachListener(mListener)
 
         observe()
-        allGuestViewModel.load()
+        allGuestViewModel.load(GuestConstants.FILTER.EMPTY)
 
         return root
     }
@@ -89,7 +94,7 @@ class AllGuestFragment : Fragment() {
     override fun onResume() {
         super.onResume()
 
-        allGuestViewModel.load()
+        allGuestViewModel.load(GuestConstants.FILTER.EMPTY)
     }
 
     override fun onDestroyView() {
@@ -101,5 +106,6 @@ class AllGuestFragment : Fragment() {
         allGuestViewModel.list.observe(viewLifecycleOwner, Observer {
             mAdapter.updateGuest(it)
         })
+
     }
 }

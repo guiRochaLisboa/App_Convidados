@@ -6,4 +6,10 @@ class GuestConstants private constructor(){
         const val GUEST_ID = "guest_id"
     }
 
+    object FILTER {
+        const val EMPTY = 0
+        const val PRESENT = 1
+        const val ABSENT = 2
+    }
+
 }
