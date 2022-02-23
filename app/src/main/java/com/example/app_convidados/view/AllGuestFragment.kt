@@ -21,7 +21,7 @@ import com.example.app_convidados.viewmodel.AllGuestViewModel
 class AllGuestFragment : Fragment() {
 
     private var _binding: FragmentAllBinding? = null
-    private lateinit var allGuestViewModel: AllGuestViewModel
+    private lateinit var mViewModel: AllGuestViewModel
     private val mAdapter: GuestAdapter = GuestAdapter()
     private lateinit var mListener: GuestListener
 
@@ -34,7 +34,7 @@ class AllGuestFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        allGuestViewModel =
+        mViewModel =
             ViewModelProvider(this).get(AllGuestViewModel::class.java)
 
         _binding = FragmentAllBinding.inflate(inflater, container, false)
@@ -73,8 +73,8 @@ class AllGuestFragment : Fragment() {
             }
 
             override fun onDelete(id: Int) {
-                allGuestViewModel.delete(id)
-                allGuestViewModel.load(GuestConstants.FILTER.EMPTY)
+                mViewModel.delete(id)
+                mViewModel.load(GuestConstants.FILTER.EMPTY)
             }
 
         }
@@ -82,7 +82,7 @@ class AllGuestFragment : Fragment() {
         mAdapter.attachListener(mListener)
 
         observe()
-        allGuestViewModel.load(GuestConstants.FILTER.EMPTY)
+        mViewModel.load(GuestConstants.FILTER.EMPTY)
 
         return root
     }
@@ -93,8 +93,7 @@ class AllGuestFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
-        allGuestViewModel.load(GuestConstants.FILTER.EMPTY)
+        mViewModel.load(GuestConstants.FILTER.EMPTY)
     }
 
     override fun onDestroyView() {
@@ -103,7 +102,7 @@ class AllGuestFragment : Fragment() {
     }
 
     private fun observe() {
-        allGuestViewModel.list.observe(viewLifecycleOwner, Observer {
+        mViewModel.list.observe(viewLifecycleOwner, Observer {
             mAdapter.updateGuest(it)
         })
 

@@ -11,13 +11,10 @@ import com.example.app_convidados.service.repository.GuestRepository
 
 class AllGuestViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val mRepository = GuestRepository.getIntance(application.applicationContext)
+    private val mRepository = GuestRepository(application.applicationContext)
 
     private val mListGuest = MutableLiveData<List<GuestModel>>()
     val list: LiveData<List<GuestModel>> = mListGuest
-
-    private val mDelete = MutableLiveData<Boolean>()
-    val delete: LiveData<Boolean> = mDelete
 
     fun load(filter: Int) {
 
@@ -32,6 +29,7 @@ class AllGuestViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun delete(id:Int) {
-        mDelete.value = mRepository.delete(id)
+        val guest = mRepository.getUser(id)
+         mRepository.delete(guest)
     }
 }

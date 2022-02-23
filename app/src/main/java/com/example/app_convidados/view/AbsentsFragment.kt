@@ -87,6 +87,11 @@ class AbsentsFragment : Fragment() {
         _binding = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        mViewModel.load(GuestConstants.FILTER.ABSENT)
+    }
+
     private fun observe() {
         mViewModel.list.observe(viewLifecycleOwner, Observer {
             mAdapter.updateGuest(it)

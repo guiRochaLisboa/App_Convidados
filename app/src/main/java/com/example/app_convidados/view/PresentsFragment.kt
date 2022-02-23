@@ -86,6 +86,11 @@ class PresentsFragment : Fragment() {
         _binding = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        mViewModel.load(GuestConstants.FILTER.PRESENT)
+    }
+
     private fun observe() {
         mViewModel.list.observe(viewLifecycleOwner, Observer {
             mAdapter.updateGuest(it)

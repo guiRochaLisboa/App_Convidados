@@ -18,7 +18,7 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
      */
 
     private lateinit var mViewModel: GuestFormViewModel
-    private var mGuestId : Int = 0
+    private var mGuestId: Int = 0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +49,7 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
             val name = edit_name.text.toString()
             val presence = button_present.isChecked
 
-                mViewModel.save(mGuestId,name, presence)
+            mViewModel.save(mGuestId, name, presence)
 
         }
     }
@@ -59,8 +59,7 @@ class GuestFormActivity : AppCompatActivity(), View.OnClickListener {
             if (it) {
                 Toast.makeText(applicationContext, "Sucesso", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(applicationContext, "Falha", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(applicationContext, "Falha", Toast.LENGTH_SHORT).show()
             }
             finish()
 
